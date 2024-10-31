@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  title       String
+  content     String
+  publishedAt DateTime
+  id          Int      @id @default(autoincrement())
+  authorId    Int
+  User        User     @relation(fields: [authorId], references: [id])
+}
+
+model ServicePhone {
+  phone       String
+  description String
+  createdAt   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+}
+
+model Shelter {
+  name        String
+  address     String
+  phone       String?
+  latitude    Float?
+  longitude   Float?
+  description String
+  createdAt   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+}
+
+model User {
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  id        Int       @id @default(autoincrement())
+  Article   Article[]
+}
+
+model Video {
+  title          String
+  description    String
+  createdAt      DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  youtubeVideoId String
+}
